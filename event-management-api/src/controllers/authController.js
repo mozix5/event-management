@@ -22,7 +22,7 @@ const register = async (req, res) => {
           email: email,
           _id: result._id,
         },
-        process.env.SECRET_KEY,
+        JWT_SECRET_KEY,
       );
       res.status(201).json({ user: result, token: token });
     }
@@ -34,6 +34,7 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   const existingUser = await User.findOne({ email: email });
+
   if (!existingUser) {
     res.status(404).json({ message: "User doesnt exists" });
   }
