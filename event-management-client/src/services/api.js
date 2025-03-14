@@ -5,6 +5,13 @@ export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: baseUrl,
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().auth.token;
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   refetchOnFocus: true,
   endpoints: (builder) => ({
@@ -23,11 +30,19 @@ export const api = createApi({
       }),
     }),
     getEvents: builder.query({
-      query: () => "events",
+      query: ({ filter, search }) => {
+        const params = {};
+        if (filter && filter !== "all") params.category = filter;
+        if (search) params.searchQuery = search.toString();
+        return {
+          url: "events",
+          params,
+        };
+      },
     }),
-    createEvents: builder.mutation({
+    createEvent: builder.mutation({
       query: (newEvent) => ({
-        url: "create-event",
+        url: "events/create-event",
         method: "POST",
         body: newEvent,
       }),
