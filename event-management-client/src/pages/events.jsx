@@ -4,6 +4,7 @@ import EventsHeader from "../components/eventsHeader.jsx";
 import SearchAndFilterBar from "../components/searchAndFilterBar.jsx";
 import EventCard from "../components/eventCard.jsx";
 import CreateEventModal from "../components/createEventModal.jsx";
+import Spinner from "../components/spinner.jsx";
 
 const EventsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,7 +13,7 @@ const EventsPage = () => {
 
   const {
     data: events = [],
-    isLoading: isEventsLoading,
+    isLoading: isLoadingEvents,
     refetch,
   } = useGetEventsQuery({
     filter: activeFilter,
@@ -69,12 +70,13 @@ const EventsPage = () => {
           onSearchChange={(e) => setSearchQuery(e.target.value)}
           activeFilter={activeFilter}
           onFilterChange={setActiveFilter}
+          isLoadingEvents={isLoadingEvents}
         />
 
         <section className="py-8">
-          {isEventsLoading ? (
+          {isLoadingEvents ? (
             <div className="text-center py-16">
-              <h3 className="text-xl font-semibold mb-2">Loading events...</h3>
+              <Spinner />
             </div>
           ) : events?.length === 0 ? (
             <div className="text-center py-16">
@@ -102,6 +104,7 @@ const EventsPage = () => {
         onSubmit={handleSubmit}
         newEvent={newEvent}
         onInputChange={handleInputChange}
+        isCreatingEvent={isCreatingEvent}
       />
     </div>
   );

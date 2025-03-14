@@ -1,5 +1,6 @@
 import React from "react";
 import { X, ChevronDown } from "lucide-react";
+import Spinner from "./spinner.jsx";
 
 const CreateEventModal = ({
   isOpen,
@@ -7,6 +8,7 @@ const CreateEventModal = ({
   onSubmit,
   newEvent,
   onInputChange,
+  isCreatingEvent,
 }) => {
   if (!isOpen) return null;
 
@@ -110,16 +112,18 @@ const CreateEventModal = ({
           <div className="flex gap-3 justify-end">
             <button
               type="button"
+              disabled={isCreatingEvent}
               onClick={onClose}
               className="px-4 py-2 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700 transition"
             >
               Cancel
             </button>
             <button
+              disabled={isCreatingEvent}
               type="submit"
               className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:opacity-90 transition"
             >
-              Create Event
+              {isCreatingEvent ? <Spinner /> : "Create Event"}
             </button>
           </div>
         </form>

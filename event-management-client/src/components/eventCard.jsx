@@ -19,23 +19,6 @@ const EventCard = ({ event }) => {
 
   return (
     <div className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 hover:border-purple-500 transition duration-300 group">
-      <div className="relative">
-        <img src={""} alt={event.title} className="w-full h-48 object-cover" />
-        <div className="absolute top-3 right-3">
-          <span
-            className={`text-xs font-medium px-2 py-1 rounded-full ${
-              event.category === "religious"
-                ? "bg-blue-900 text-blue-200"
-                : event.category === "social"
-                  ? "bg-green-900 text-green-200"
-                  : "bg-amber-900 text-amber-200"
-            }`}
-          >
-            {event.category}
-          </span>
-        </div>
-      </div>
-
       <div className="p-5">
         <h3 className="text-lg font-semibold mb-2 group-hover:text-purple-400 transition duration-300">
           {event.title}

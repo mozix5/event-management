@@ -1,12 +1,34 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../services/reducers/authSlice.js";
+import { destroySession } from "../utils/session.js";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
+
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
+
+  const handleNavigation = (path) => {
+    navigate(path);
+    setMobileMenuOpen(false);
+  };
+
+  const handleLogout = () => {
+    destroySession();
+    dispatch(logout());
+  };
+
+  const isActive = (path) => location.pathname === path;
+
   return (
     <header className="bg-gray-800 border-b border-gray-700">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -32,30 +54,53 @@ const Header = () => {
         </div>
 
         <nav className="hidden md:flex space-x-8">
-          <a href="#" className="text-purple-400 font-medium">
+          <button
+            onClick={() => handleNavigation("/")}
+            className={`font-medium ${
+              isActive("/") ? "text-purple-400" : "text-gray-300"
+            }`}
+          >
             Home
-          </a>
-          <a
-            href="#"
-            className="text-gray-300 hover:text-purple-400 transition duration-300"
+          </button>
+          <button
+            onClick={() => handleNavigation("/events")}
+            className={`hover:text-purple-400 transition duration-300 ${
+              isActive("/events") ? "text-purple-400" : "text-gray-300"
+            }`}
           >
             Events
-          </a>
-          <a
-            href="#"
-            className="text-gray-300 hover:text-purple-400 transition duration-300"
-          >
-            About
-          </a>
+          </button>
         </nav>
 
         <div className="hidden md:flex space-x-4">
-          <button className="px-4 py-2 text-gray-300 hover:text-purple-400 transition duration-300">
-            Log In
-          </button>
-          <button className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:opacity-90 transition duration-300">
-            Sign Up
-          </button>
+          {isAuthenticated ? (
+            <div className="flex items-center space-x-4">
+              <span className="text-purple-400">{user?.username}</span>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:opacity-90 transition duration-300"
+              >
+                Log Out
+              </button>
+            </div>
+          ) : (
+            <>
+              <button
+                onClick={() => handleNavigation("/auth")}
+                className={`px-4 py-2 hover:text-purple-400 transition duration-300 ${
+                  isActive("/auth") ? "text-purple-400" : "text-gray-300"
+                }`}
+              >
+                Log In
+              </button>
+              <button
+                onClick={() => handleNavigation("/auth")}
+                className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:opacity-90 transition duration-300"
+              >
+                Sign Up
+              </button>
+            </>
+          )}
         </div>
 
         <button className="md:hidden text-gray-300" onClick={toggleMobileMenu}>
@@ -66,28 +111,53 @@ const Header = () => {
       {mobileMenuOpen && (
         <div className="md:hidden bg-gray-800 pb-4 px-4">
           <nav className="flex flex-col space-y-4">
-            <a href="#" className="text-purple-400 font-medium py-2">
+            <button
+              onClick={() => handleNavigation("/")}
+              className={`font-medium py-2 text-left ${
+                isActive("/") ? "text-purple-400" : "text-gray-300"
+              }`}
+            >
               Home
-            </a>
-            <a
-              href="#"
-              className="text-gray-300 hover:text-purple-400 transition duration-300 py-2"
+            </button>
+            <button
+              onClick={() => handleNavigation("/events")}
+              className={`hover:text-purple-400 transition duration-300 py-2 text-left ${
+                isActive("/events") ? "text-purple-400" : "text-gray-300"
+              }`}
             >
               Events
-            </a>
-            <a
-              href="#"
-              className="text-gray-300 hover:text-purple-400 transition duration-300 py-2"
-            >
-              About
-            </a>
+            </button>
             <hr className="my-2 border-gray-700" />
-            <button className="px-4 py-2 text-gray-300 hover:text-purple-400 transition duration-300">
-              Log In
-            </button>
-            <button className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:opacity-90 transition duration-300">
-              Sign Up
-            </button>
+            {isAuthenticated ? (
+              <div className="flex flex-col space-y-4">
+                <span className="text-purple-400 py-2 text-left">
+                  {user?.username}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:opacity-90 transition duration-300 text-left"
+                >
+                  Log Out
+                </button>
+              </div>
+            ) : (
+              <>
+                <button
+                  onClick={() => handleNavigation("/auth")}
+                  className={`px-4 py-2 hover:text-purple-400 transition duration-300 text-left ${
+                    isActive("/auth") ? "text-purple-400" : "text-gray-300"
+                  }`}
+                >
+                  Log In
+                </button>
+                <button
+                  onClick={() => handleNavigation("/auth")}
+                  className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:opacity-90 transition duration-300 text-left"
+                >
+                  Sign Up
+                </button>
+              </>
+            )}
           </nav>
         </div>
       )}

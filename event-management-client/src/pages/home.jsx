@@ -2,6 +2,10 @@ import { Calendar, Heart, MessageCircle } from "lucide-react";
 import Footer from "../components/footer.jsx";
 import FeatureCard from "../components/featureCard.jsx";
 import TestimonialCard from "../components/testimonialCard.jsx";
+import Spinner from "../components/spinner.jsx";
+import { useEffect } from "react";
+import { validateSession } from "../utils/workflow.js";
+import { useDispatch } from "react-redux";
 
 const featureSection = [
   {
@@ -44,7 +48,12 @@ const testimonials = [
     role: "New Member",
   },
 ];
+
 const Home = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    validateSession(dispatch);
+  }, []);
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
       <section className="relative overflow-hidden py-20 md:py-32">
@@ -77,11 +86,12 @@ const Home = () => {
               <div className="relative">
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg blur opacity-75"></div>
                 <div className="relative bg-gray-800 p-2 rounded-lg">
-                  <img
-                    src=""
-                    alt="People connecting at community event"
-                    className="rounded-lg w-full max-w-md"
-                  />
+                  {/*<img*/}
+                  {/*  src=""*/}
+                  {/*  alt="People connecting at community event"*/}
+                  {/*  className="rounded-lg w-full max-w-md"*/}
+                  {/*/>*/}
+                  <Spinner />
                 </div>
               </div>
             </div>

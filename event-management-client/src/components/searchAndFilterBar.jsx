@@ -6,6 +6,7 @@ const SearchAndFilterBar = ({
   onSearchChange,
   activeFilter,
   onFilterChange,
+  isLoadingEvents,
 }) => {
   return (
     <div className="flex flex-col md:flex-row md:items-center gap-4 py-4">
@@ -31,6 +32,7 @@ const SearchAndFilterBar = ({
         {["all", "religious", "social", "charity"].map((filter) => (
           <button
             key={filter}
+            disabled={isLoadingEvents}
             onClick={() => onFilterChange(filter)}
             className={`px-3 py-1 rounded-full text-sm ${
               activeFilter === filter
