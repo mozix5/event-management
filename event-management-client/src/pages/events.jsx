@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   Calendar,
   MapPin,
-  Clock,
   Search,
   Plus,
   Filter,

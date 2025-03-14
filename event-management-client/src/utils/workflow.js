@@ -2,6 +2,7 @@ import { destroySession, getSession } from "./session.js";
 import { logout, validate } from "../services/reducers/authSlice.js";
 
 export const workflowStarted = (dispatch) => {
+  dispatch(logout());
   destroySession();
 };
 

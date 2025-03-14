@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { Eye, EyeOff, ArrowLeft, Lock, Mail, User } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { useLoginMutation, useRegisterMutation } from "../services/api.js";
 import { createSession } from "../utils/session.js";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { workflowStarted } from "../utils/workflow.js";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -12,9 +14,14 @@ const Auth = () => {
   const [activeTab, setActiveTab] = useState("login"); // 'login' or 'signup'
 
   const [login, { isLoading }] = useLoginMutation();
-  const [register, { isRegistering, error }] = useRegisterMutation();
-
+  const [register, { isRegistering }] = useRegisterMutation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    workflowStarted(dispatch);
+  }, [dispatch]);
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };

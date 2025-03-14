@@ -103,7 +103,11 @@ const Home = () => {
 
           <div className="grid md:grid-cols-3 gap-8">
             {featureSection.map((item, index) => (
-              <FeatureCard key={index} title={item.title} description={item.description} />
+              <FeatureCard
+                key={index}
+                title={item.title}
+                description={item.description}
+              />
             ))}
           </div>
         </div>
