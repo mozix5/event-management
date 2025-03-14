@@ -1,14 +1,4 @@
-import {
-  Search,
-  Calendar,
-  Users,
-  Menu,
-  X,
-  Globe,
-  Heart,
-  MessageCircle,
-} from "lucide-react";
-import { useState } from "react";
+import { Calendar, Heart, MessageCircle } from "lucide-react";
 import Footer from "../components/footer.jsx";
 import FeatureCard from "../components/featureCard.jsx";
 import TestimonialCard from "../components/testimonialCard.jsx";
@@ -88,7 +78,7 @@ const Home = () => {
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg blur opacity-75"></div>
                 <div className="relative bg-gray-800 p-2 rounded-lg">
                   <img
-                    src="/api/placeholder/500/600"
+                    src=""
                     alt="People connecting at community event"
                     className="rounded-lg w-full max-w-md"
                   />
@@ -113,7 +103,7 @@ const Home = () => {
 
           <div className="grid md:grid-cols-3 gap-8">
             {featureSection.map((item, index) => (
-              <FeatureCard title={item.title} description={item.description} />
+              <FeatureCard key={index} title={item.title} description={item.description} />
             ))}
           </div>
         </div>
