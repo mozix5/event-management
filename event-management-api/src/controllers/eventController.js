@@ -27,16 +27,23 @@ const createEvent = async (req, res) => {
 
 const getAllEvents = async (req, res) => {
   try {
-    const { category } = req.query;
+    const { category, searchQuery } = req.query;
     let filter = {};
+
     if (category) {
       filter.category = category;
     }
+
+    if (searchQuery) {
+      filter.title = { $regex: searchQuery, $options: "i" };
+    }
+
     const events = await Event.find(filter)
       .populate("createdBy", "username -_id")
       .sort({ date: 1 });
+
     return res.status(200).json({ events });
-  } catch {
+  } catch (error) {
     return res.status(500).json({ message: "Something went wrong" });
   }
 };
